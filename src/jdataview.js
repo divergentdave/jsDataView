@@ -183,11 +183,20 @@ jDataView.prototype = {
 			b7 = this._getUint8(this._endianness(offset, 7, 8, littleEndian)),
 
 			sign = 1 - (2 * (b0 >> 7)),
-			exponent = ((((b0 << 1) & 0xff) << 3) | (b1 >> 4)) - (Math.pow(2, 10) - 1),
+			exponentBits = ((((b0 << 1) & 0xff) << 3) | (b1 >> 4)),
+			exponent = exponentBits - (Math.pow(2, 10) - 1),
 
 		// Binary operators such as | and << operate on 32 bit values, using + and Math.pow(2) instead
 			mantissa = ((b1 & 0x0f) * Math.pow(2, 48)) + (b2 * Math.pow(2, 40)) + (b3 * Math.pow(2, 32))
 					+ (b4 * Math.pow(2, 24)) + (b5 * Math.pow(2, 16)) + (b6 * Math.pow(2, 8)) + b7;
+
+		if (exponentBits == 0x7ff) {
+			if (mantissa == 0) {
+				return sign * Infinity;
+			} else {
+				return NaN;
+			}
+		}
 
 		if (mantissa == 0 && exponent == -(Math.pow(2, 10) - 1)) {
 			return 0.0;
@@ -207,8 +216,17 @@ jDataView.prototype = {
 			b3 = this._getUint8(this._endianness(offset, 3, 4, littleEndian)),
 
 			sign = 1 - (2 * (b0 >> 7)),
-			exponent = (((b0 << 1) & 0xff) | (b1 >> 7)) - 127,
+			exponentBits = (((b0 << 1) & 0xff) | (b1 >> 7)),
+			exponent = exponentBits - 127,
 			mantissa = ((b1 & 0x7f) << 16) | (b2 << 8) | b3;
+		
+		if (exponentBits == 255) {
+			if (mantissa == 0) {
+				return sign * Infinity;
+			} else {
+				return NaN;
+			}
+		}
 
 		if (mantissa == 0 && exponent == -127) {
 			return 0.0;
