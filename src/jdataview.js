@@ -61,7 +61,7 @@ var jDataView = function (buffer, byteOffset, byteLength, littleEndian) {
 		this._start = 0;
 	}
 	this._start = byteOffset;
-	if (byteOffset >= bufferLength) {
+	if (byteOffset + byteLength > bufferLength) {
 		throw new Error("INDEX_SIZE_ERR: DOM Exception 1");
 	}
 
@@ -316,6 +316,18 @@ for (var type in dataTypes) {
 			};
 	})(type);
 }
+
+Object.defineProperty(jDataView.prototype, "byteOffset", {
+	get: function() {
+		return this._start;
+	}
+});
+	
+Object.defineProperty(jDataView.prototype, "byteLength", {
+	get: function() {
+		return this.length;
+	}
+});
 
 window.jDataView = jDataView;
 
