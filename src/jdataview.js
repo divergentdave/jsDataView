@@ -34,7 +34,7 @@ var jDataView = function (buffer, byteOffset, byteLength, littleEndian) {
 	this._isDataView = compatibility.DataView && this._isArrayBuffer;
 
 	// Default Values
-	this._littleEndian = littleEndian === undefined ? true : littleEndian;
+	this._littleEndian = littleEndian === undefined ? false : littleEndian;
 
 	var bufferLength = this._isArrayBuffer ? buffer.byteLength : buffer.length;
 	if (byteOffset == undefined) {
