@@ -15,6 +15,12 @@ var compatibility = {
 }
 
 var jDataView = function (buffer, byteOffset, byteLength, littleEndian) {
+	// Must be called as constructor
+	if (!(this instanceof arguments.callee))
+	{
+		throw new Error("Constructor may not be called as a function");
+	}
+
 	this._buffer = buffer;
 
 	// Handle Type Errors
@@ -285,7 +291,7 @@ for (var type in dataTypes) {
 
 				// Handle the lack of byteOffset
 				if (byteOffset === undefined) {
-					byteOffset = this._offset;
+					throw new ArgumentError("get" + type + "() requires at least one argument");
 				}
 
 				// Dispatch on the good method
