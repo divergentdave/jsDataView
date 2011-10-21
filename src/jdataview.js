@@ -342,7 +342,7 @@ for (var type in dataTypes) {
 					if (byteOffset + size > this.length) {
 						throw new Error("INDEX_SIZE_ERR: DOM Exception 1");
 					}
-					value = this['_get' + type](this._start + byteOffset, littleEndian);
+					value = this['_get' + type](byteOffset, littleEndian);
 				}
 
 				// Move the internal offset forward
