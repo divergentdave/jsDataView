@@ -328,6 +328,10 @@ for (var type in dataTypes) {
 				// ArrayBuffer: we use a typed array of size 1 if the alignment is good
 				// ArrayBuffer does not support endianess flag (for size > 1)
 				else if (this._isArrayBuffer && (this._start + byteOffset) % size == 0 && (size == 1 || littleEndian)) {
+					if (byteOffset + size > this.length) {
+					    throw new Error("INDEX_SIZE_ERR: DOM Exception 1");
+					}
+					
 					value = new window[type + 'Array'](this._buffer, this._start + byteOffset, 1)[0];
 				}
 				else {
