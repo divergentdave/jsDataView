@@ -276,6 +276,14 @@ jDataView.prototype = {
 		} else {
 			return this._buffer.charCodeAt(this._start + offset) & 0xff;
 		}
+	},
+	
+	get byteOffset() {
+		return this._start;
+	},
+	
+	get byteLength() {
+		return this.length;
 	}
 };
 
@@ -340,18 +348,6 @@ for (var type in dataTypes) {
 			};
 	})(type);
 }
-
-Object.defineProperty(jDataView.prototype, "byteOffset", {
-	get: function() {
-		return this._start;
-	}
-});
-	
-Object.defineProperty(jDataView.prototype, "byteLength", {
-	get: function() {
-		return this.length;
-	}
-});
 
 window.jDataView = jDataView;
 
