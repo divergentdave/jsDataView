@@ -1,4 +1,4 @@
-<a href="http://blog.vjeux.com/2011/javascript/jdataview-read-binary-file.html">jDataView</a> - A unique way to read a binary file in the browser.
+<a href="http://blog.vjeux.com/2011/javascript/jdataview-read-binary-file.html">jDataView</a> - A unique way to read a binary file in Javascript.
 ================================
 
 jDataView provides a standard way to read binary files in all the browsers. It follows the [DataView Specification](http://www.khronos.org/registry/webgl/doc/spec/TypedArray-spec.html#6) and even extends it for a more practical use.
@@ -14,7 +14,11 @@ There are three ways to read a binary file from the browser.
 
 * A new revision of the specification added **DataViews**. It is a view around your buffer that can read arbitrary data types directly through functions: getUint32, getFloat64 ... Only Chrome 9 supports it.
 
-jDataView provides the DataView API for all the browsers using the best available option between Strings, TypedArrays and DataViews.
+And one way to read a binary file from the server.
+
+* **NodeJS Buffers**. They appeared in [Node 0.4.0](http://nodejs.org/docs/v0.4.0/api/buffers.html). [Node 0.5.0](http://nodejs.org/docs/v0.5.0/api/buffers.html) added a DataView-like API. And [Node 0.6.0](http://nodejs.org/docs/v0.6.0/api/buffers.html) changed the API naming convention.
+
+jDataView provides the DataView API using the best available option between Strings, TypedArrays, NodeJS Buffers and DataViews.
 
 API
 ===
@@ -66,7 +70,6 @@ Shortcomings
 ==========
 
 * Only the Read API is being wrapped, jDataView does not provide any `set` method.
-* The Float64 implementation on strings does not have full precision.
 * I found that most files we want to read are in littleEndian due to x86 architecture. I changed the default behavior of getters to be littleEndian instead of bigEndian.
 
 Example
@@ -123,10 +126,15 @@ $.get(
 
 Changelog
 ========
-* **21 September 2011**: Added a missing ```littleEndian``` argument on getInt16.
-* **28 April 2011**: Seeking to the end of file no longer throws an error.
-* **26 April 2011**: Fixed a bug with extremely large unsigned 32bit being considered as signed. ([Solution](http://stackoverflow.com/questions/1240408/reading-bytes-from-a-javascript-string/2954435#2954435)). 
-* **8 April 2011**: Added littleEndian argument on the constructor. Opera 11.50 does not fully implement DataView, improved check.
+* **November 30 2011**:
+  * Added NodeJS Buffer support + NPM Package.
+  * Added support for NaN and Infinity in the float shim.
+  * Added ```buffer```, ```byteLength``` and ```byteOffset``` attributes.
+  * Fixed bugs using non zero ```byteOffset` and added more bound checks.
+* **September 21 2011**: Added a missing ```littleEndian``` argument on getInt16.
+* **April 28 2011**: Seeking to the end of file no longer throws an error.
+* **April 26 2011**: Fixed a bug with extremely large unsigned 32bit being considered as signed. ([Solution](http://stackoverflow.com/questions/1240408/reading-bytes-from-a-javascript-string/2954435#2954435)). 
+* **April 8 2011**: Added littleEndian argument on the constructor. Opera 11.50 does not fully implement DataView, improved check.
 
 Demos
 ==== 
